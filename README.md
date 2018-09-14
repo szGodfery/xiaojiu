@@ -1,21 +1,16 @@
-# web21_vue
+# xiaojiuhk_vue
 
-## Project setup
+## 项目安装的依赖
 ```
-npm install
+cnpm install
 ```
 
-### Compiles and hot-reloads for development
+### 项目运行
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+##项目展示截图
 
-### Lints and fixes files
-```
-npm run lint
-```
+<img src="./project_img_demo/demo1.png" />
+
