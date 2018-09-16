@@ -180,11 +180,7 @@
     </div>
 
     <!-- 动画元素 先定位到购物车下面 -->
-    <transition
-    @before-enter='beforeEnter'
-    @enter='enter'
-    @after-enter='afterEnter'
-    >
+    <transition @before-enter='beforeEnter' @enter='enter' @after-enter='afterEnter'>
       <div v-show="isShow" v-if="goodsDatail.imglist" class="animateBox" ref="animateBoxRef">
         <img width="50px" height="50px" :src="`http://47.106.148.205:8899/${goodsDatail.goodsinfo.img_url}`" alt="">
       </div>
@@ -234,15 +230,15 @@ export default {
       addCartOffset: null, //动画开始xy值
       cartBuyOffset: null, //动画结束的xy值
       //count:null// 购物车计数
-      isNeedRender:true   // 是否需要重新渲染放大镜页面用于updated里面
+      isNeedRender: true // 是否需要重新渲染放大镜页面用于updated里面
     };
   },
   updated() {
     // data发生了变化并且，视图已经渲染完毕了
-    if(this.isNeedRender){
+    if (this.isNeedRender) {
       $("#magnifier1").imgzoon({ magnifier: "#magnifier1" });
+      this.isNeedRender = false;
     }
-    //this.isNeedRender=false
   },
   created() {
     //const goodsid = this.$route.params.id; //获取传递过来的参数
@@ -252,29 +248,28 @@ export default {
   watch: {
     $route: function(newValue, oldValue) {
       //监控到路由变化,就再次发起请求
-      
+
       this.getGoodsInfo(); //产品详细信息
       this.getCommentsInfo(); //评论详细信息
     }
   },
   methods: {
     getGoodsInfo() {
-      //this.isNeedRender=true//把渲染值重新更新为true
       // 获取商品详情数据
       const url = `site/goods/getgoodsinfo/${this.$route.params.id}`;
       this.$axios.get(url).then(response => {
         this.goodsDatail = response.data.message;
-
+        this.isNeedRender = true; //把渲染值重新更新为true
         setTimeout(() => {
           //注意这里一定要用箭头函数不然this的指向有问题
           //在此处先初始化动画起始位置和结束位置
           //获得加入购物车按钮的起始位置(x,y),通过ref操作dom
           //存入数据中,以便后期调用 使用了jquery操作dom元素得到xy
-          this.addCartOffset = $(this.$refs.addShopToCartRef).offset()
+          this.addCartOffset = $(this.$refs.addShopToCartRef).offset();
 
           //设置动画的box的xy坐标
-          $(this.$refs.animateBoxRef).offset(this.addCartOffset)
-          
+          $(this.$refs.animateBoxRef).offset(this.addCartOffset);
+
           //获得结束位置
           this.cartBuyOffset = $("#shoppingCartCount").offset();
         }, 200);
@@ -337,37 +332,39 @@ export default {
     // 加入购物车
     addToShopCart() {
       this.isShow = true;
-     
+
       // 使用vuex的Mutation方法来同步更新store的数据
-      const goods={goodsid:this.$route.params.id,goodsCount:this.goodsCount}
-      this.$store.commit('addGoods',goods)  //触发index.js中的仓库的mutations
+      const goods = {
+        goodsid: this.$route.params.id,
+        goodsCount: this.goodsCount
+      };
+      this.$store.commit("addGoods", goods); //触发index.js中的仓库的mutations
 
-/**
- * 以前的方法
- */ //this.count+=this.goodsCount
-    // 把商品信息存到本地localStorage
-    //先从localStorage中取出来,如果有就取出,没有就返回一个空对象
-    // let goodsObj = JSON.parse(localStorage.getItem('goods')||'{}')
+      /**
+       * 以前的方法
+       */ //this.count+=this.goodsCount
+      // 把商品信息存到本地localStorage
+      //先从localStorage中取出来,如果有就取出,没有就返回一个空对象
+      // let goodsObj = JSON.parse(localStorage.getItem('goods')||'{}')
 
-    // //获取商品的id信息和购买数量  用对象的方式存起来好带过去
-    // goodsObj[this.$route.params.id]=this.count
+      // //获取商品的id信息和购买数量  用对象的方式存起来好带过去
+      // goodsObj[this.$route.params.id]=this.count
 
-    // localStorage.setItem('goods',JSON.stringify(goodsObj))
+      // localStorage.setItem('goods',JSON.stringify(goodsObj))
 
-    // //购物车信息传给父组件 $emit触发,调用,发射的意思this.$emit(方法名,参数1)
-    //   this.$emit('func',this.goodsCount)
+      // //购物车信息传给父组件 $emit触发,调用,发射的意思this.$emit(方法名,参数1)
+      //   this.$emit('func',this.goodsCount)
     },
-    
-   
-
 
     // 动画相关
-    beforeEnter: function(el) {//进入之前动画位置
+    beforeEnter: function(el) {
+      //进入之前动画位置
       el.style.left = `${this.addCartOffset.left}px`;
       el.style.top = `${this.addCartOffset.top}px`;
       el.style.transform = `scale(1)`;
     },
-    enter: function(el, done) {//动画执行过程
+    enter: function(el, done) {
+      //动画执行过程
       el.style.transition = "all 0.8s linear";
 
       // 刷新动画帧

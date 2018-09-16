@@ -12,5 +12,11 @@ npm run serve
 
 ##项目展示截图
 
+
 <img src="./project_img_demo/demo1.png" />
+----------------------
+
+<img src="./project_img_demo/demo2.png"/>
+----------------------
+<img src="./project_img_demo/demo3.png"/>
 

@@ -33,6 +33,11 @@ Vue.use(VueLazyload, {
 import store from './store/index'
 
 
+//导入vue二维码生成器  全局注册
+import DZHQRcode from 'dzh-qrcode'
+Vue.use(DZHQRcode)
+
+
 
 
 

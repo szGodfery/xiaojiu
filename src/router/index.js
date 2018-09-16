@@ -30,6 +30,8 @@ import order from '../components/order/order.vue' //订单信息
 
 import login from '../components/account/login.vue' //登录信息
 
+import pay from '../components/order/pay.vue' //支付中心
+
 
 
 
@@ -48,8 +50,10 @@ const router = new VueRouter({
         { path: '/login', component: login },
 
 
+
         /********************以下路由需要判断是否登录 */
-        { path: '/order', meta: { NeedLogin: true }, component: order }
+        { path: '/order', meta: { NeedLogin: true }, component: order },
+        { path: '/pay', meta: { NeedLogin: true }, component: pay }
     ],
 
 })
@@ -79,11 +83,6 @@ router.beforeEach((to, from, next) => {
             }
         })
     } else {
-        axios.get('site/account/islogin').then(success => {
-            if (success.data.code == 'logined') { //表示已经登录过
-                bus.$emit('ChangeShow') //改变App.vue头部显示问题
-            }
-        })
         next()
 
     }

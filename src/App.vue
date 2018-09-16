@@ -10,7 +10,7 @@
             <a target="_blank" href="#"></a>
             <a target="_blank" href="#"></a>
           </div>
-          <div id="menu" class="right-box">
+          <div id="menu" class="right-box" v-if="isReady">
             <span v-show="!isLoginShow">
               <router-link to="/login" class="">登录</router-link>
               <strong>|</strong>
@@ -151,7 +151,8 @@ export default {
   data() {
     return {
       cartBuy: 0,
-      isLoginShow: false
+      isLoginShow: false,
+      isReady:false
     };
   },
   methods: {
@@ -165,13 +166,24 @@ export default {
           this.$router.push({ path: "/goodlist" })
         }
       });
+    },
+     ready(){
+       this.$axios.get('site/account/islogin').then(success => {
+            this.isReady=true
+            if (success.data.code == 'logined') { //表示已经登录过
+                this.isLoginShow = true     
+            }
+        })
     }
   },
   created() {
     //接收登录组件传递过来的修改显示头部注册会员登录方法
     bus.$on("ChangeShow", () => {
       this.isLoginShow = true
-    });
+      this.isReady=true
+    })
+
+    this.ready()
   },
   mounted() {
     $("#menu2 li a").wrapInner('<span class="out"></span>');
