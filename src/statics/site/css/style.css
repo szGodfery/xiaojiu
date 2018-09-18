@@ -424,7 +424,7 @@ img {
 
 .sub-tit {
     margin: 0 50px 10px;
-    padding-top: 35px;
+    /* padding-top: 35px; */
     height: 42px;
     border-bottom: 1px solid #e0e0e0;
     font-size: 16px;

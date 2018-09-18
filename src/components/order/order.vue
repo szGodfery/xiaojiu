@@ -320,6 +320,14 @@ export default {
       this.order.goodsAmount = this.order.expressMoment + this.totalPrice;
       return this.order.expressMoment + this.totalPrice;
     }
+  },
+  beforeDestroy(){
+    //销毁之前,禁用浏览器后退功能
+     history.pushState(null, null, document.URL);
+    window.addEventListener("popstate", function() {
+      history.pushState(null, null, document.URL);
+    });
+
   }
 };
 </script>

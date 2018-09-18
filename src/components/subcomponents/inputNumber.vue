@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .left,.middle,.right{
   display: inline-block;
   border: 1px solid #bbb;

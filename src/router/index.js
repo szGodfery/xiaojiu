@@ -30,7 +30,15 @@ import order from '../components/order/order.vue' //订单信息
 
 import login from '../components/account/login.vue' //登录信息
 
-import pay from '../components/order/pay.vue' //支付中心
+import pay from '../components/pay/pay.vue' //支付中心
+
+import paySuccess from '../components/pay/paySuccess.vue' //支付成功
+
+import vipCenter from '../components/vipCenter/vipCenter.vue' //会员中心
+
+import myOrders from '../components/vipCenter/myOrders.vue' //我的订单
+
+import orderInfo from '../components/vipCenter/orderInfo.vue' //订单详情
 
 
 
@@ -53,7 +61,11 @@ const router = new VueRouter({
 
         /********************以下路由需要判断是否登录 */
         { path: '/order', meta: { NeedLogin: true }, component: order },
-        { path: '/pay', meta: { NeedLogin: true }, component: pay }
+        { path: '/pay', meta: { NeedLogin: true }, component: pay },
+        { path: '/paySuccess', meta: { NeedLogin: true }, component: paySuccess },
+        { path: '/vipCenter', meta: { NeedLogin: true }, component: vipCenter },
+        { path: '/myOrders', meta: { NeedLogin: true }, component: myOrders },
+        { path: '/orderInfo/:orderid', meta: { NeedLogin: true }, component: orderInfo }
     ],
 
 })

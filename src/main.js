@@ -34,10 +34,14 @@ import store from './store/index'
 
 
 //导入vue二维码生成器  全局注册
-import DZHQRcode from 'dzh-qrcode'
-Vue.use(DZHQRcode)
+import DZHQRCode from 'dzh-qrcode'
+
+// 全局注册
+Vue.component('dzh-qrcode', DZHQRCode)
 
 
+// 测试promise使用
+// import './promiseAsync.js'
 
 
 

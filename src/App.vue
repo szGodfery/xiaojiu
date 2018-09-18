@@ -18,7 +18,7 @@
               <strong>|</strong>
             </span>
             <span v-show="isLoginShow">
-              <a href="" class="">会员中心</a>
+              <a href="#/vipCenter" class="">会员中心</a>
               <strong>|</strong>
               <a @click="logout">退出</a>
               <strong>|</strong>
@@ -127,7 +127,7 @@
 
 
 // 样式部分
-<style>
+<style scoped>
 /* 导入jquery样式 */
 @import "./statics/site/jquery_plugins/hoverNav/css/style.css";
 

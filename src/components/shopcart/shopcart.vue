@@ -116,7 +116,7 @@
     </div>
   </div>
 </template>
- <style>
+ <style scoped>
 .el-table thead th {
   background-color: #f5f5f5;
 }

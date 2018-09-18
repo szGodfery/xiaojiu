@@ -36,7 +36,7 @@
                   <div class="el-col el-col-12">
                     <dl class="form-group">
                       <dt>送货地址：</dt>
-                      <dd>{{orderInfo.address}}
+                      <dd>{{orderInfo.area}}{{orderInfo.address}}
                       </dd>
                     </dl>
                   </div>
@@ -67,9 +67,7 @@
                 </div>
               </div>
               <div class="el-col el-col-8">
-                <dzh-qrcode 
-                url="https://www.npmjs.com/package/dzh-qrcode"
-                ></dzh-qrcode>
+                <dzh-qrcode :img_url="img_url" :url="urls"></dzh-qrcode>
               </div>
             </div>
           </div>
@@ -81,25 +79,55 @@
 
 </template>
 <script>
-
 export default {
   data() {
     return {
-      orderInfo:{}
+      orderInfo: {},
+      urls: "", //二维码扫码支付链接
+      timeId: 0, //计时器
+      img_url: ''//二维码中间图片信息
     };
   },
   created() {
     this.getOrderInfo();
+    this.getOrderPayStatus();
+    this.img_url=require(`../../statics/site/images/alipay.png`) 
+  },
+  mounted() {
+    this.urls = `http://47.106.148.205:8899/site/validate/pay/alipay/${
+      this.$route.query.orderid
+    }`
+    
   },
   methods: {
     getOrderInfo() {
-      const url = `site/validate/order/getorder/${this.$route.query.orderid}`
-      this.$axios.get(url).then(success=>{
-        if(success.data.status==0){
-          this.orderInfo=success.data.message[0]
+      const url = `site/validate/order/getorder/${this.$route.query.orderid}`;
+      this.$axios.get(url).then(success => {
+        if (success.data.status == 0) {
+          this.orderInfo = success.data.message[0];
+          if (success.data.message[0].status === 2) {
+            this.$router.push({ path: "/paySuccess" });
+          }
         }
-      })
+      });
+    },
+    //轮询服务器的支付状态
+    getOrderPayStatus() {
+      //每隔3秒轮询服务器的支付状态,,,用计时器,
+      this.timeId = setInterval(() => {
+        const url = `site/validate/order/getorder/${this.$route.query.orderid}`;
+        this.$axios.get(url).then(success => {
+          if (success.data.message[0].status === 2) {
+            //如果支付状态等于2,那么就跳转到支付成功页面,并在生命周期函数钩子中清除定时器
+            this.$router.push({ path: "/paySuccess" });
+          }
+        });
+      }, 3000);
     }
+  },
+  beforeDestroy() {
+    //销毁之前清除计时器
+    clearInterval(this.timeId);
   }
 };
 </script>

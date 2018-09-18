@@ -1,7 +1,7 @@
 (function($){
 	
-	var fnName = 'magnifier';
-	var magnifier = {
+	let fnName = 'magnifier';
+	let magnifier = {
 		magnifier : ".magnifier",//最外层的大容器
 
 		container : ".magnifier-container",//选择当前主图的承载容器
@@ -33,13 +33,13 @@
 		//设置属性值
 		if(typeof(magnifierAttr) == "object"){
 
-			for( var n in magnifierAttr){
+			for( let n in magnifierAttr){
 
 				magnifier[n] = magnifierAttr[n];
 			}
 		}
 
-		var _this = {};
+		let _this = {};
 		//绑定容器		
 		
 		_this.magnifier = $(magnifier.magnifier);
@@ -49,7 +49,7 @@
 		_this.thumbnail = _this.magnifier.find(magnifier.thumbnail);
 		_this.assembly = _this.magnifier.find(magnifier.assembly);
 		_this.containerImg = _this.magnifier.find(magnifier.containerImg);
-		var imgBox = _this.containerImg;
+		let imgBox = _this.containerImg;
 
 		//設置寬高
 		_this.magnifier.css({
@@ -64,7 +64,7 @@
 			"height" : magnifier.height
 		});
 
-		var boxMoveViewWidth,boxMoveViewHeight;
+		let boxMoveViewWidth,boxMoveViewHeight;
 		if(magnifier.moveWidth){
 
 			boxMoveViewWidth = magnifier.moveWidth;
@@ -80,7 +80,7 @@
 		});
 
 		//计算体积碰撞的变量
-		var deviationXl,
+		let deviationXl,
 			deviationXr,
 			deviationYt,
 			deviationYb,
@@ -90,15 +90,15 @@
 
 		_this.eqImg = function(){
 
-			var img = new Image(),
+			let img = new Image(),
 				src = _this.thumbnail.find("img").eq(magnifier.index).attr('src');
 
 				//console.log(_this.thumbnail.find("img"));
 			img.src = src;
 			
 			//承载容器的宽高
-			var containerWidth = magnifier.width;
-			var containerHeight = magnifier.height;
+			let containerWidth = magnifier.width;
+			let containerHeight = magnifier.height;
 
 			_this.thumbnail.find('>*').removeClass('active').eq(magnifier.index).addClass('active');
 
@@ -109,7 +109,7 @@
 					img.onload = imgLoadEnd;
 				}
 
-				var styleCss;
+				let styleCss;
 				if(img.width > img.height){
 					
 					imgWidth = magnifier.width;
@@ -146,11 +146,11 @@
 
 		_this.moveFn = function(e){
 
-			var X = (e.clientX-_this.magnifier.offset().left)-boxMoveViewWidth/2,
+			let X = (e.clientX-_this.magnifier.offset().left)-boxMoveViewWidth/2,
 				Y = (e.clientY-_this.magnifier.offset().top + $(document).scrollTop())-boxMoveViewHeight/2;
 
-		var	endX = (X > deviationXl) ? (X < deviationXr) ? X : deviationXr : deviationXl;
-		var	endY = (Y > deviationYt) ? (Y < deviationYb) ? Y : deviationYb : deviationYt;
+		let	endX = (X > deviationXl) ? (X < deviationXr) ? X : deviationXr : deviationXl;
+		let	endY = (Y > deviationYt) ? (Y < deviationYb) ? Y : deviationYb : deviationYt;
 			
 			//当Y轴超出容器
 			endY = (endY > 0) ? (endY > (magnifier.width-boxMoveViewHeight)) ? (magnifier.height-boxMoveViewHeight) : endY : 0;
@@ -160,8 +160,8 @@
 				'display' : "block"
 			});
 			
-			var	positionX = (endX - (magnifier.width-imgWidth)/2)*multiple;
-			var	positionY = (endY - (magnifier.height-imgHieght)/2)*multiple;
+			let	positionX = (endX - (magnifier.width-imgWidth)/2)*multiple;
+			let	positionY = (endY - (magnifier.height-imgHieght)/2)*multiple;
 
 			_this.view.css({
 				'display' : "block"
@@ -181,20 +181,20 @@
 			_this.view.hide();
 		});
 
-		var thumbnailImg = _this.thumbnail.find('>*'),
+		let thumbnailImg = _this.thumbnail.find('>*'),
 			lineLenght = thumbnailImg.length;
 		_this.imgMove = function(_boole){
 
 			(_boole) ? magnifier.index++ : magnifier.index--;
 
-			var _deviation = Math.ceil(magnifier.width / thumbnailImg.width() /2);
+			let _deviation = Math.ceil(magnifier.width / thumbnailImg.width() /2);
 			if(lineLenght < _deviation){
 				return false;
 			}
 			
 			(magnifier.index < 0) ? magnifier.index = 0 : (magnifier.index > lineLenght-_deviation) ? magnifier.index = lineLenght - _deviation : magnifier.index;
 
-			var endLeft = (thumbnailImg.width() * magnifier.index) - thumbnailImg.width();
+			let endLeft = (thumbnailImg.width() * magnifier.index) - thumbnailImg.width();
 			
 			_this.thumbnail.css({
 
